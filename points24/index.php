@@ -1,12 +1,33 @@
+<html>
+<head>
+	<title>24 points game</title>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<h1>24 points online game</h1>
+<h3>by wusuopubupt</h3>
+<form id="my_form" method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
+	<input type="text" name="a" class="my_text" />
+	<input type="text" name="b" class="my_text" />
+	<input type="text" name="c" class="my_text" />
+	<input type="text" name="d" class="my_text" />
+	<input type="submit" value="calculate!" />
+</form>
 <?php
 include('postfix2infix.php');
 
 define('PRECISION', 1E-6);
 $sentinels = array();
 $commutations = array();
-$number  = array(7,4,5,6);
-$formula = $number;
-search(4);
+//$number  = array(7,4,5,6);
+if(isset($_POST['a']) && isset($_POST['b']) && isset($_POST['c']) && isset($_POST['d'])) {
+	$number[] = $_POST['a'];
+	$number[] = $_POST['b'];
+	$number[] = $_POST['c'];
+	$number[] = $_POST['d'];
+	$formula = $number;
+	search(4);
+}
 
 function search($n) {
 	global $number;
@@ -19,7 +40,6 @@ function search($n) {
 			$fml = convertRPN2Infix($formula[0]);
 			
 			if(check_exist($fml,$sentinels) && check_commutation($fml,$commutations)){
-				$sentinels[] = $fml;
 				echo $fml;
 				echo "<br>";
 				return true;
@@ -82,12 +102,6 @@ function search($n) {
 	}
 }
 
-function check_exist($fml,$haystack){
-	if(in_array($fml, $haystack)) {
-		return false;
-	}
-	return true;
-}
 
 function collect($fmls,$len) {
 	for($i = 0; $i < $len; $i++) {
@@ -99,6 +113,14 @@ function collect($fmls,$len) {
 		}
 	}
 	return $opts;
+}
+
+function check_exist($fml,&$haystack){
+	if(!in_array($fml, $haystack)) {
+		$haystack[] = $fml;
+		return true;
+	}
+	return false;
 }
 
 function check_commutation($fml,&$commutations) {
