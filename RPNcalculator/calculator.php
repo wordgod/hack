@@ -10,12 +10,32 @@
 	</form>
 <?php
 if(isset($_POST['expr'])) {
-	//$expr = "2/4*8*6";
-	$expr = str_split($_POST['expr']);
+	$expr = readin($_POST['expr']);
 	$result = cal($expr);
 	echo "result is: $result";
 }
 
+function readin($expr) {
+	$expr = str_split($expr);
+	$len  = count($expr);
+	$infix = array();
+	$opts  = array('+','-','*','/','(',')');
+	$num = "";
+	for($i = 0; $i < $len; $i++) {
+		if(in_array($expr[$i], $opts) || ($i == $len-1)) {
+			if($num = floatval($num)) {
+				array_push($infix, $num);
+				$num = "";
+			}
+			array_push($infix, $expr[$i]);
+		}
+		else {
+			$num .= $expr[$i];
+		}
+	}
+	var_dump($infix);
+	return $infix;
+}
 function cal($expr) {
 	$postfix_expr = infix2postfix($expr);
 	var_dump($postfix_expr);
@@ -98,6 +118,8 @@ function level($op) {
 			return 2;
 	}
 }
+
+
 ?>
 </body>
 </html>
