@@ -104,7 +104,7 @@ function operate($left,$op,$right) {
 		case '*':
 			return $left * $right;
 		case '/':
-			return $left / $right;
+			return $left / $right;  // should check right is 0 or not!
 	}
 }
 
