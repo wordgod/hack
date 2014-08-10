@@ -2,7 +2,6 @@
 //node type is number
 function makeNumberNode($number) {
 	$node = array();
-	
 	$node['kind'] = "number";
 	$node['value']= $number;
 	
